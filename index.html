@@ -27,14 +27,20 @@
       <label for="input">Choose File</label>
     </div>
 
+    <canvas id="preview"></canvas>
+
     <script>
       const d = document
       const $input = d.getElementById('input')
+      const $preview = d.getElementById('preview')
+      const previewCtx = $preview.getContext('2d')
       const fileReader = new FileReader()
       const image = new Image()
 
       image.addEventListener('load', (e) => {
-        d.body.appendChild(image)
+        $preview.width = image.width
+        $preview.height = image.height
+        previewCtx.drawImage(image, 5, 20)
       })
 
       fileReader.addEventListener('load', (e) => {
