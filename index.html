@@ -22,18 +22,24 @@
     </style>
   </head>
   <body>
-    <input type="file" accept="image/*" name="input" id="input" />
-    <label for="input">Choose File</label>
+    <div>
+      <input type="file" accept="image/*" name="input" id="input" />
+      <label for="input">Choose File</label>
+    </div>
 
     <script>
       const d = document
       const $input = d.getElementById('input')
       const fileReader = new FileReader()
+      const image = new Image()
+
+      image.addEventListener('load', (e) => {
+        d.body.appendChild(image)
+      })
 
       fileReader.addEventListener('load', (e) => {
-        console.log(e)
-        /* To be continue ... */
-
+        const base64 = e.target.result
+        image.src = base64
       })
 
       $input.addEventListener('change', (e) => {
