@@ -28,11 +28,17 @@
     <script>
       const d = document
       const $input = d.getElementById('input')
+      const fileReader = new FileReader()
 
-      $input.addEventListener('change', (e) => {
+      fileReader.addEventListener('load', (e) => {
         console.log(e)
         /* To be continue ... */
 
+      })
+
+      $input.addEventListener('change', (e) => {
+        const file = e.target.files[0]
+        fileReader.readAsDataURL(file)
       })
     </script>
   </body>
