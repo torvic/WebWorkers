@@ -35,6 +35,12 @@
       const $preview = d.getElementById('preview')
       const previewCtx = $preview.getContext('2d')
       const image = new Image()
+      const worker = new Worker('worker.js')
+
+      worker.addEventListener('message', (d) => {
+        const imageData = d.data
+        previewCtx.putImageData(imageData, 5, 20)
+      })
 
       function applyFilter() {
         const imageData = previewCtx.getImageData(
@@ -44,14 +50,7 @@
           $preview.height
         )
 
-        for (let x = 0; x < imageData.width; x++) {
-          for (let y = 0; y < imageData.height; y++) {
-            let index = (x + y * imageData.width) * 4
-            imageData.data[index + 3] = 127
-          }
-        }
-
-        previewCtx.putImageData(imageData, 5, 20)
+        worker.postMessage(imageData, [imageData.data.buffer])
       }
 
       $input.addEventListener('change', (e) => {
