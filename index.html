@@ -37,10 +37,23 @@
       const fileReader = new FileReader()
       const image = new Image()
 
+      function applyFilter() {
+        const imageData = previewCtx.getImageData(
+          5,
+          20,
+          image.width,
+          image.width
+        )
+        console.log(imageData)
+
+        /* To be continue ... */
+      }
+
       image.addEventListener('load', (e) => {
         $preview.width = image.width
         $preview.height = image.height
         previewCtx.drawImage(image, 5, 20)
+        applyFilter()
       })
 
       fileReader.addEventListener('load', (e) => {
