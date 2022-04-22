@@ -34,19 +34,19 @@
       const $input = d.getElementById('input')
       const $preview = d.getElementById('preview')
       const previewCtx = $preview.getContext('2d')
-      const fileReader = new FileReader()
       const image = new Image()
 
       function applyFilter() {
         const imageData = previewCtx.getImageData(
           5,
           20,
-          image.width,
-          image.width
+          $preview.width,
+          $preview.height
         )
-        for (let x = 0; x < image.width; x++) {
-          for (let y = 0; y < image.height; y++) {
-            let index = (x + y * image.width) * 4
+
+        for (let x = 0; x < imageData.width; x++) {
+          for (let y = 0; y < imageData.height; y++) {
+            let index = (x + y * imageData.width) * 4
             imageData.data[index + 3] = 127
           }
         }
@@ -54,21 +54,14 @@
         previewCtx.putImageData(imageData, 5, 20)
       }
 
-      image.addEventListener('load', (e) => {
-        $preview.width = image.width
-        $preview.height = image.height
-        previewCtx.drawImage(image, 5, 20)
-        applyFilter()
-      })
-
-      fileReader.addEventListener('load', (e) => {
-        const base64 = e.target.result
-        image.src = base64
-      })
-
       $input.addEventListener('change', (e) => {
         const file = e.target.files[0]
-        fileReader.readAsDataURL(file)
+        createImageBitmap(file).then((bitmap) => {
+          $preview.width = bitmap.width
+          $preview.height = bitmap.height
+          previewCtx.drawImage(bitmap, 5, 20)
+          applyFilter()
+        })
       })
     </script>
   </body>
